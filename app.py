@@ -49,7 +49,7 @@ def tab_tts(text: str, voice: str):
 # ── Tab: Voice Clone ─────────────────────────────────────────────────────────
 
 
-def tab_clone(text: str, audio_sample, voice_name: str):
+def tab_clone(text: str, audio_sample):
     err = _check_key()
     if err:
         return None, err
@@ -59,8 +59,8 @@ def tab_clone(text: str, audio_sample, voice_name: str):
         return None, "Upload sample audio untuk cloning."
     try:
         sample_path = audio_sample if isinstance(audio_sample, str) else audio_sample.name
-        audio = mimo_client.voice_clone(text, sample_path, voice_name=voice_name)
-        return _save_temp(audio), f"✅ Voice cloned from sample as '{voice_name}'"
+        audio = mimo_client.voice_clone(text, sample_path)
+        return _save_temp(audio), "✅ Voice cloned successfully"
     except Exception as e:
         return None, f"❌ {e}"
 
@@ -128,8 +128,6 @@ footer { display: none !important; }
 def build_app() -> gr.Blocks:
     with gr.Blocks(
         title="MiMo Audio Studio",
-        
-        
     ) as app:
         gr.Markdown(
             """
@@ -159,14 +157,13 @@ def build_app() -> gr.Blocks:
             with gr.Tab("🎤 Voice Clone"):
                 gr.Markdown("Upload sample suara, lalu MiMo akan meniru karakter suara tersebut.")
                 clone_audio = gr.Audio(label="Sample Audio (upload)", type="filepath")
-                clone_name = gr.Textbox(label="Voice Name", value="cloned", placeholder="Nama voice clone")
                 clone_text = gr.Textbox(label="Teks yang diucapkan", placeholder="Apa yang ingin diucapkan?", lines=3)
                 clone_btn = gr.Button("🎤 Clone & Speak", variant="primary")
                 clone_output = gr.Audio(label="Output", type="filepath")
                 clone_status = gr.Markdown()
                 clone_btn.click(
                     tab_clone,
-                    inputs=[clone_text, clone_audio, clone_name],
+                    inputs=[clone_text, clone_audio],
                     outputs=[clone_output, clone_status],
                 )
 
