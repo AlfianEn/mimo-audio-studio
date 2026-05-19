@@ -128,8 +128,8 @@ footer { display: none !important; }
 def build_app() -> gr.Blocks:
     with gr.Blocks(
         title="MiMo Audio Studio",
-        theme=gr.themes.Soft(),
-        css=CUSTOM_CSS,
+        
+        
     ) as app:
         gr.Markdown(
             """
@@ -231,4 +231,4 @@ def build_app() -> gr.Blocks:
 
 if __name__ == "__main__":
     app = build_app()
-    app.launch(server_name="0.0.0.0", server_port=7860)
+    app.launch(server_name="0.0.0.0", server_port=7860, theme=gr.themes.Soft(), css=CUSTOM_CSS)
